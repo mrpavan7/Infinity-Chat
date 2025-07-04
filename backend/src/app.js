@@ -2,14 +2,17 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import { isMember, isRoomExists } from "./lib/utils.js";
+import dotenv from "dotenv";
 
 const app = express();
+dotenv.config();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
   },
 });
+const PORT = process.env.PORT || 5000;
 
 io.on("connection", (socket) => {
   socket.on("check-room", ({ roomId }, callback) => {
@@ -114,6 +117,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => {
-  console.log("server has started on port 5000");
+server.listen(PORT, () => {
+  console.log(`server has started on port ${PORT}`);
 });
